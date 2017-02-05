@@ -274,6 +274,7 @@ def statement(tx):
             error(16)
         getsym()
         statement(tx)
+
         if sym == "ELSE":   #probably need to add error code as well
             getsym()
             statement(tx)
@@ -399,8 +400,8 @@ errorFlag = 0
 table.append(0)    #making the first position in the symbol table empty
 sym = ' '            
 
-infile =    sys.stdin       #path to input file
-outfile =  sys.stdout     #path to output file, will create if doesn't already exist
+infile  =   sys.stdin       #path to input file
+outfile =   sys.stdout      #path to output file, will create if doesn't already exist
 
 getsym()            #get first symbol
 block(0)             #call block initializing with a table index of zero
