@@ -1,6 +1,6 @@
 import sys
 
-norw = 11      #number of reserved words
+norw = 12      #number of reserved words
 txmax = 100   #length of identifier table
 nmax = 14      #max number of digits in number
 al = 10          #length of identifiers
@@ -274,6 +274,9 @@ def statement(tx):
             error(16)
         getsym()
         statement(tx)
+        if sym == "ELSE":   #probably need to add error code as well
+            getsym()
+            statement(tx)
     
     elif sym == "BEGIN":
         while True:
@@ -365,6 +368,7 @@ rword.append('PROCEDURE')
 rword.append('THEN')
 rword.append('VAR')
 rword.append('WHILE')
+rword.append('ELSE')
 
 ssym = {'+' : "plus",
              '-' : "minus",
