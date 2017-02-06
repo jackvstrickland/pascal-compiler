@@ -203,41 +203,43 @@ def block(tableIndex):
     tx = [1]
     tx[0] = tableIndex
     global sym, id;
-    if sym == "CONST":
-        while True:               #makeshift do while in python
+    # adding while loop to block function for global restricted variables
+    while sym == "PROCEDURE" or sym == "CONST" or sym == "VAR":
+        if sym == "CONST":
+            while True:               #makeshift do while in python
+                getsym()
+                constdeclaration(tx)
+                if sym != "comma":
+                    break
+            if sym != "semicolon":
+                error(10);
             getsym()
-            constdeclaration(tx)
-            if sym != "comma":
-                break
-        if sym != "semicolon":
-            error(10);
-        getsym()
-    
-    if sym == "VAR":
-        while True:
-            getsym()
-            vardeclaration(tx)
-            if sym != "comma":
-                break
-        if sym != "semicolon":
-            error(10)
-        getsym()
-    
-    while sym == "PROCEDURE":
-        getsym()
-        if sym == "ident":
-            enter(tx, "procedure")
-            getsym()
-        else:
-            error(4)
-        if sym != "semicolon":
-            error(10)
-        getsym()
-        block(tx[0])
         
-        if sym != "semicolon":
-            error(10)
-        getsym()
+        if sym == "VAR":
+            while True:
+                getsym()
+                vardeclaration(tx)
+                if sym != "comma":
+                    break
+            if sym != "semicolon":
+                error(10)
+            getsym()
+        
+        while sym == "PROCEDURE":
+            getsym()
+            if sym == "ident":
+                enter(tx, "procedure")
+                getsym()
+            else:
+                error(4)
+            if sym != "semicolon":
+                error(10)
+            getsym()
+            block(tx[0])
+            
+            if sym != "semicolon":
+                error(10)
+            getsym()
     
     statement(tx[0])
 
@@ -368,6 +370,7 @@ rword.append('PROCEDURE')
 rword.append('THEN')
 rword.append('VAR')
 rword.append('WHILE')
+# adding new reserved words here
 rword.append('ELSE')
 
 ssym = {'+' : "plus",
@@ -394,7 +397,7 @@ linelen = 0
 ch = ' '
 kk = al                
 a = []
-id= '     '
+id = '     '
 errorFlag = 0
 table.append(0)    #making the first position in the symbol table empty
 sym = ' '            
