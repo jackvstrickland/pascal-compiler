@@ -274,7 +274,6 @@ def statement(tx):
             error(16)
         getsym()
         statement(tx)
-
         if sym == "ELSE":   #probably need to add error code as well
             getsym()
             statement(tx)
