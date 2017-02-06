@@ -14,9 +14,7 @@ PROCEDURE ONE;
                 CALL TWO;
             END;
             ELSE
-            BEGIN                
-                CALL THREE;
-            END;
+                D := 4;
         END;
 
     PROCEDURE THREE;
