@@ -1,6 +1,6 @@
 import sys
 
-norw = 12      #number of reserved words
+norw = 15      #number of reserved words
 txmax = 100   #length of identifier table
 nmax = 14      #max number of digits in number
 al = 10          #length of identifiers
@@ -372,6 +372,9 @@ rword.append('VAR')
 rword.append('WHILE')
 # adding new reserved words here
 rword.append('ELSE')
+rword.append('FOR')
+rword.append('TO')
+rword.append('DOWNTO')
 
 ssym = {'+' : "plus",
              '-' : "minus",
