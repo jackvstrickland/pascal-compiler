@@ -282,6 +282,7 @@ def statement(tx):
             error(16)
         getsym()
         statement(tx)
+        #getsym()            #enabling this will perform else, but break everything else...
         if sym == "ELSE":   #probably need to add error code as well
             getsym()
             statement(tx)
@@ -303,8 +304,8 @@ def statement(tx):
             error(18)
         getsym()
         statement(tx)
-    
-    # adding more to statement()
+
+    # adding more "production" rules to statement()
     elif sym == "FOR":
         getsym()
         # need to check if VAR and ident
@@ -320,10 +321,12 @@ def statement(tx):
             error(13)
         getsym()
         expression(tx)
+        #getsym() #test
         if sym != "TO" or sym != "DOWNTO":
             error(28) #throw error, expected to or downto
         getsym()
         expression(tx)
+        #getsym() #test
         if sym != "DO":
             error(18)
         getsym()
