@@ -1,6 +1,6 @@
 import sys
 
-norw = 12      #number of reserved words
+norw = 15      #number of reserved words
 txmax = 100   #length of identifier table
 nmax = 14      #max number of digits in number
 al = 10          #length of identifiers
@@ -74,6 +74,10 @@ def error(num):
         print >>outfile, "Constant or Number is expected."
     elif num == 26: 
         print >>outfile, "This number is too large."
+    elif num == 27:
+        print >>outfile, "FOR should be followed by identifier."
+    elif num == 28:
+        print >>outfile, "FOR EXPRESSION must be followed by TO or DOWNTO."
     exit(0)
     
 def getch():
@@ -204,7 +208,7 @@ def block(tableIndex):
     tx[0] = tableIndex
     global sym, id;
     # adding while loop to block function for global restricted variables
-    while sym == "PROCEDURE" or sym == "CONST" or sym == "VAR":
+    while sym == "CONST" or sym == "VAR" or sym == "PROCEDURE":
         if sym == "CONST":
             while True:               #makeshift do while in python
                 getsym()
@@ -297,6 +301,31 @@ def statement(tx):
             error(18)
         getsym()
         statement(tx)
+    
+    # adding more to statement()
+    elif sym == "FOR":
+        getsym()
+        # need to check if VAR and ident
+        if sym != "ident":
+            error(27)  
+        i = position(tx, id)
+        if i= = 0:
+            error(11)
+        elif table[i].kind != "variable":
+            error(12)
+        getsym()
+        if sym != "becomes":
+            error(13)
+        getsym()
+        expression(tx)
+        if sym != "TO" or sym != "DOWNTO":
+            error(28) #throw error, expected to or downto
+        getsym()
+        expression(tx)
+        if sym != "DO":
+            error(18)
+        getsym()
+        statement(tx)
 
 #--------------EXPRESSION--------------------------------------
 def expression(tx):
@@ -372,6 +401,9 @@ rword.append('VAR')
 rword.append('WHILE')
 # adding new reserved words here
 rword.append('ELSE')
+rword.append('FOR')
+rword.append('TO')
+rword.append('DOWNTO')
 
 ssym = {'+' : "plus",
              '-' : "minus",
