@@ -24,13 +24,13 @@ def error(num):
     print
     if num == 1: 
         print >>outfile, "Use = instead of :="
-    elif num ==2: 
+    elif num == 2: 
         print >>outfile, "= must be followed by a number."
-    elif num ==3: 
+    elif num == 3: 
         print >>outfile, "Identifier must be followed by ="
-    elif num ==4: 
+    elif num == 4: 
         print >>outfile, "Const, Var, Procedure must be followed by an identifier."
-    elif num ==5: 
+    elif num == 5: 
         print >>outfile, "Semicolon or comman missing"
     elif num == 6: 
         print >>outfile, "Incorrect symbol after procedure declaration."
@@ -70,7 +70,7 @@ def error(num):
         print >>outfile, "The preceding factor cannot be followed by this symbol."
     elif num == 24:
         print >>outfile, "An expression cannot begin with this symbol."
-    elif num ==25:
+    elif num == 25:
         print >>outfile, "Constant or Number is expected."
     elif num == 26: 
         print >>outfile, "This number is too large."
@@ -79,7 +79,7 @@ def error(num):
     elif num == 28:
         print >>outfile, "FOR EXPRESSION must be followed by TO or DOWNTO."
     exit(0)
-    
+
 def getch():
     global  whichChar, ch, linelen, line;
     if whichChar == linelen:         #if at end of line
@@ -368,7 +368,7 @@ def factor(tx):
         getsym()
     
     else:
-#        print "sym here is: ", sym
+        #print "sym here is: ", sym
         error(24)
 
 #-----------CONDITION-------------------------------------------------
