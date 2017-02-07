@@ -306,33 +306,28 @@ def statement(tx):
     elif sym == "FOR":
         getsym()
         # need to check if VAR and ident
-        if sym == "ident":
-            i = position(tx, id)
-            if i==0:
-                error(11)
-            elif table[i].kind != "variable":
-                error(12)
-            getsym()
-            if sym != "becomes":
-                error(13)
-            getsym()
-            expression(tx)
-            getsym()
-            if sym != "TO" or sym != "DOWNTO":
-                error(28) #throw error, expected to or downto
-            getsym()
-            expression(tx)
-            getsym()
-            if sym != "DO":
-                error(18)
-            getsym()
-            statement(tx)
+        if sym != "ident":
+            error(27)  
+        i = position(tx, id)
+        if i==0:
+            error(11)
+        elif table[i].kind != "variable":
+            error(12)
+        getsym()
+        if sym != "becomes":
+            error(13)
+        getsym()
+        expression(tx)
+        if sym != "TO" or sym != "DOWNTO":
+            error(28) #throw error, expected to or downto
+        getsym()
+        expression(tx)
+        if sym != "DO":
+            error(18)
+        getsym()
+        statement(tx)
         else:
             error(27) # throw error, expected identifier
-
-
-
-
 
 #--------------EXPRESSION--------------------------------------
 def expression(tx):
