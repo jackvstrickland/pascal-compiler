@@ -309,7 +309,7 @@ def statement(tx):
         if sym != "ident":
             error(27)  
         i = position(tx, id)
-        if i= = 0:
+        if i == 0:
             error(11)
         elif table[i].kind != "variable":
             error(12)
