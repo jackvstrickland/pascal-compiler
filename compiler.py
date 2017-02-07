@@ -1,6 +1,6 @@
 import sys
 
-norw = 15      #number of reserved words
+norw = 17      #number of reserved words
 txmax = 100   #length of identifier table
 nmax = 14      #max number of digits in number
 al = 10          #length of identifiers
@@ -78,6 +78,8 @@ def error(num):
         print >>outfile, "FOR should be followed by identifier."
     elif num == 28:
         print >>outfile, "FOR EXPRESSION must be followed by TO or DOWNTO."
+    elif num == 29:
+        print >>outfile, "WRITE/WRITELN must be followed 1 or more expressions inside parantheses."
     exit(0)
 
 def getch():
@@ -327,6 +329,30 @@ def statement(tx):
         getsym()
         statement(tx)
 
+    elif sym == "WRITE":
+        getsym()                #have to check for lparen and then 1 or more exp. followed by rparen
+        if sym != "lparen":
+            error(29)
+        getsym()
+        expression(tx)
+        while sym == "comma":   #if there is more than one expression
+            getsym()
+            expression(tx)
+        if sym != "rparen":
+            error(22)
+        
+    elif sym == "WRITELN":
+        getsym()                #have to check for lparen and then 1 or more exp. followed by rparen
+        if sym != "lparen":
+            error(29)
+        getsym()
+        expression(tx)
+        while sym == "comma":   #if there is more than one expression
+            getsym()
+            expression(tx)
+        if sym != "rparen":
+            error(22)       
+
 #--------------EXPRESSION--------------------------------------
 def expression(tx):
     global sym;
@@ -404,6 +430,8 @@ rword.append('ELSE')
 rword.append('FOR')
 rword.append('TO')
 rword.append('DOWNTO')
+rword.append('WRITE')
+rword.append('WRITELN')
 
 ssym = {'+' : "plus",
              '-' : "minus",
