@@ -336,22 +336,24 @@ def statement(tx):
         while True:             #always one expression, but may be more than one
             getsym()
             expression(tx)
-            if sym == "comma":
+            if sym != "comma":
                 break   
         if sym != "rparen":
             error(22)
+        getsym()
 
     elif sym == "WRITELN":
-        getsym()                #have to check for lparen and then 1 or more exp. followed by rparen
+        getsym()            #have to check for lparen,then 1 or more exp.,followed by rparen
         if sym != "lparen":
             error(29)
-        while True:             #always one expression, but may be more than one
+        while True:         #always one expression, but may be more than one
             getsym()
             expression(tx)
-            if sym == "comma":
+            if sym != "comma":
                 break   
         if sym != "rparen":
             error(22)
+        getsym()
 
 #--------------EXPRESSION--------------------------------------
 def expression(tx):
@@ -394,7 +396,7 @@ def factor(tx):
         getsym()
     
     else:
-        #print "sym here is: ", sym
+        print "sym here is: ", sym
         error(24)
 
 #-----------CONDITION-------------------------------------------------
