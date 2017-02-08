@@ -31,7 +31,7 @@ def error(num):
     elif num == 4: 
         print >>outfile, "Const, Var, Procedure must be followed by an identifier."
     elif num == 5: 
-        print >>outfile, "Semicolon or comman missing"
+        print >>outfile, "Semicolon or comma missing."
     elif num == 6: 
         print >>outfile, "Incorrect symbol after procedure declaration."
     elif num == 7:  
@@ -43,17 +43,17 @@ def error(num):
     elif num == 10: 
         print >>outfile, "Semicolon between statements is missing."
     elif num == 11:  
-        print >>outfile, "Undeclared identifier"
+        print >>outfile, "Undeclared identifier."
     elif num == 12:
         print >>outfile, "Assignment to a constant or procedure is not allowed."
     elif num == 13:
         print >>outfile, "Assignment operator := expected."
     elif num == 14: 
-        print >>outfile, "call must be followed by an identifier"
+        print >>outfile, "Call must be followed by an identifier."
     elif num == 15:  
         print >>outfile, "Call of a constant or a variable is meaningless."
     elif num == 16:
-        print >>outfile, "Then expected"
+        print >>outfile, "Then expected."
     elif num == 17:
         print >>outfile, "Semicolon or end expected. "
     elif num == 18: 
@@ -75,21 +75,23 @@ def error(num):
     elif num == 26: 
         print >>outfile, "This number is too large."
     elif num == 27:
-        print >>outfile, "FOR should be followed by identifier."
+        print >>outfile, "FOR should be followed by <ident>."
     elif num == 28:
-        print >>outfile, "FOR EXPRESSION must be followed by TO or DOWNTO."
+        print >>outfile, "FOR <expression> must be followed by TO or DOWNTO."
     elif num == 29:
-        print >>outfile, "WRITE/WRITELN must be followed 1 or more expressions inside parantheses."
+        print >>outfile, "WRITE/WRITELN must be followed 1 or more <expression> inside parantheses."
     elif num == 30:
-        print >>outfile, "Expected UNTIL after statements following REPEAT."
+        print >>outfile, "Expected UNTIL after <statement>'s following REPEAT."
     elif num == 31:
-        print >>outfile, "Expected OF following expression after CASE."
+        print >>outfile, "Expected OF following <expression> after CASE."
     elif num == 32:
         print >>outfile, "Expected CEND following CASE."
     elif num == 33:
-        print >>outfile, "Expected ident to be a CONST."
+        print >>outfile, "Expected <ident> to be a CONST."
     elif num == 34:
         print >>outfile, "CASE requires a CONST <ident> or a <number> followed by :"
+    elif num == 35: 
+        print >>outfile, "CASE expects a semi-colon after <statement>."
     exit(0)
 
 def getch():
@@ -257,7 +259,7 @@ def block(tableIndex):
                 error(10)
             getsym()
     
-    statement(tx[0])
+    statement(tx[0])        #always executes (unless error)
 
 #--------------STATEMENT----------------------------------------
 def statement(tx):
@@ -292,7 +294,7 @@ def statement(tx):
             error(16)
         getsym()
         statement(tx)
-        if sym == "ELSE":   #probably need to add error code as well
+        if sym == "ELSE":
             getsym()
             statement(tx)
     
@@ -317,7 +319,7 @@ def statement(tx):
     # adding more "production" rules to statement
     elif sym == "FOR":
         getsym()
-        if sym != "ident":          # need to check if VAR and ident
+        if sym != "ident":  # need to check if VAR and ident
             error(27)  
         i = position(tx, id)
         if i == 0:
@@ -338,8 +340,8 @@ def statement(tx):
         getsym()
         statement(tx)
 
-    elif sym == "WRITE":
-        getsym()                #have to check for lparen and then 1 or more exp. followed by rparen
+    elif sym == "WRITE":        #have to check for lparen and then 1 or more exp. followed by rparen
+        getsym()               
         if sym != "lparen":
             error(29)
         while True:             #always one expression, but may be more than one
@@ -351,8 +353,8 @@ def statement(tx):
             error(22)
         getsym()
 
-    elif sym == "WRITELN":
-        getsym()            #have to check for lparen,then 1 or more exp.,followed by rparen
+    elif sym == "WRITELN":  #have to check for lparen,then 1 or more exp.,followed by rparen
+        getsym()            
         if sym != "lparen":
             error(29)
         while True:         #always one expression, but may be more than one
@@ -378,31 +380,30 @@ def statement(tx):
     elif sym == "CASE":
         getsym()
         expression(tx)
-        if sym != "OF":
-            error(31)           #throw error for expected OF
+        if sym != "OF":         #throw error for expected of
+            error(31)
         getsym()
         while True:
             if sym != "number" and sym != "ident":
                 break
-            if sym == "ident":      #ident must be constant
+            if sym == "ident":                  #ident must be constant
                 i = position(tx, id)
                 if i==0:
                     error(11)
-                elif table[i].kind != "const":
-                    error(33)           #throw error for expected CONST ident
+                elif table[i].kind != "const":      #throw error for expected CONST ident
+                    error(33)   
             getsym()
-            if sym != "colon":
-                error(34)               #throw error for expected colon
+            if sym != "colon":          #throw error for expected colon
+                error(34)                       
             getsym()
             statement(tx)
-            if sym != "semicolon":
-                error(35)               #throw error for expected semi colon
+            if sym != "semicolon":      #throw error for expected semi colon
+                error(35)                       
             getsym()
-
         if sym != "CEND":
             error(32)
-        
         getsym()
+
 #--------------EXPRESSION--------------------------------------
 def expression(tx):
     global sym;
@@ -444,7 +445,7 @@ def factor(tx):
         getsym()
     
     else:
-        print "sym here is: ", sym
+        #print "sym here is: ", sym
         error(24)
 
 #-----------CONDITION-------------------------------------------------
@@ -515,16 +516,16 @@ kk = al
 a = []
 id = '     '
 errorFlag = 0
-table.append(0)    #making the first position in the symbol table empty
+table.append(0)             #making the first position in the symbol table empty
 sym = ' '            
 
 infile  =   sys.stdin       #path to input file
 outfile =   sys.stdout      #path to output file, will create if doesn't already exist
 
-getsym()            #get first symbol
-block(0)             #call block initializing with a table index of zero
+getsym()                    #get first symbol
+block(0)                    #call block initializing with a table index of zero
 
-if sym != "period":      #period expected after block is completed
+if sym != "period":         #period expected after block is completed
     error(9)
 
 print >> outfile
