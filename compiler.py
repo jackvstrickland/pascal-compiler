@@ -381,20 +381,28 @@ def statement(tx):
         if sym != "OF":
             error(31)           #throw error for expected OF
         getsym()
-        if sym == "ident":      #ident must be constant
-            i = position(tx, id)
-            if i==0:
-                error(11)
-            elif table[i].kind != "const":
-                error(33)       #throw error for expected CONST ident
-        elif sym != "number":
-            error(34)           #throw error for expected CONST ident or number
+        while True:
+            if sym != "number" and sym != "ident":
+                break
+            if sym == "ident":      #ident must be constant
+                i = position(tx, id)
+                if i==0:
+                    error(11)
+                elif table[i].kind != "const":
+                    error(33)           #throw error for expected CONST ident
+            getsym()
+            if sym != "colon":
+                error(34)               #throw error for expected colon
+            getsym()
+            statement(tx)
+            if sym != "semicolon":
+                error(35)               #throw error for expected semi colon
+            getsym()
 
         if sym != "CEND":
-            error(32)           #throw error for expected CEND
-
-
-
+            error(32)
+        
+        getsym()
 #--------------EXPRESSION--------------------------------------
 def expression(tx):
     global sym;
