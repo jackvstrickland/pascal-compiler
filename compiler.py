@@ -31,7 +31,7 @@ def error(num):
     elif num == 4: 
         print >>outfile, "Const, Var, Procedure must be followed by an identifier."
     elif num == 5: 
-        print >>outfile, "Semicolon or comman missing"
+        print >>outfile, "Semicolon or comma missing."
     elif num == 6: 
         print >>outfile, "Incorrect symbol after procedure declaration."
     elif num == 7:  
@@ -43,17 +43,17 @@ def error(num):
     elif num == 10: 
         print >>outfile, "Semicolon between statements is missing."
     elif num == 11:  
-        print >>outfile, "Undeclared identifier"
+        print >>outfile, "Undeclared identifier."
     elif num == 12:
         print >>outfile, "Assignment to a constant or procedure is not allowed."
     elif num == 13:
         print >>outfile, "Assignment operator := expected."
     elif num == 14: 
-        print >>outfile, "call must be followed by an identifier"
+        print >>outfile, "Call must be followed by an identifier."
     elif num == 15:  
         print >>outfile, "Call of a constant or a variable is meaningless."
     elif num == 16:
-        print >>outfile, "Then expected"
+        print >>outfile, "Then expected."
     elif num == 17:
         print >>outfile, "Semicolon or end expected. "
     elif num == 18: 
@@ -75,19 +75,19 @@ def error(num):
     elif num == 26: 
         print >>outfile, "This number is too large."
     elif num == 27:
-        print >>outfile, "FOR should be followed by identifier."
+        print >>outfile, "FOR should be followed by <ident>."
     elif num == 28:
-        print >>outfile, "FOR EXPRESSION must be followed by TO or DOWNTO."
+        print >>outfile, "FOR <expression> must be followed by TO or DOWNTO."
     elif num == 29:
-        print >>outfile, "WRITE/WRITELN must be followed 1 or more expressions inside parantheses."
+        print >>outfile, "WRITE/WRITELN must be followed 1 or more <expression> inside parantheses."
     elif num == 30:
-        print >>outfile, "Expected UNTIL after statements following REPEAT."
+        print >>outfile, "Expected UNTIL after <statement>'s following REPEAT."
     elif num == 31:
-        print >>outfile, "Expected OF following expression after CASE."
+        print >>outfile, "Expected OF following <expression> after CASE."
     elif num == 32:
         print >>outfile, "Expected CEND following CASE."
     elif num == 33:
-        print >>outfile, "Expected ident to be a CONST."
+        print >>outfile, "Expected <ident> to be a CONST."
     elif num == 34:
         print >>outfile, "CASE requires a CONST <ident> or a <number> followed by :"
     elif num == 35: 
@@ -445,7 +445,7 @@ def factor(tx):
         getsym()
     
     else:
-        print "sym here is: ", sym
+        #print "sym here is: ", sym
         error(24)
 
 #-----------CONDITION-------------------------------------------------
