@@ -1,3 +1,10 @@
+# Jack Strickland
+# CSC 330
+# Pascal compiler written in Python2.7
+# This wasn't too bad. After writing only the modifications and successfully
+# compiling post-mod.pas, it caught the errors in 1-4. I feel like I know
+# this compiler front-to-back now! 
+
 import sys
 
 norw = 22      #number of reserved words
