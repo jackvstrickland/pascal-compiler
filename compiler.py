@@ -1,6 +1,6 @@
 import sys
 
-norw = 19      #number of reserved words
+norw = 22      #number of reserved words
 txmax = 100   #length of identifier table
 nmax = 14      #max number of digits in number
 al = 10          #length of identifiers
@@ -81,7 +81,15 @@ def error(num):
     elif num == 29:
         print >>outfile, "WRITE/WRITELN must be followed 1 or more expressions inside parantheses."
     elif num == 30:
-        print >>outfile, "expected UNTIL after statements following REPEAT."
+        print >>outfile, "Expected UNTIL after statements following REPEAT."
+    elif num == 31:
+        print >>outfile, "Expected OF following expression after CASE."
+    elif num == 32:
+        print >>outfile, "Expected CEND following CASE."
+    elif num == 33:
+        print >>outfile, "Expected ident to be a CONST."
+    elif num == 34:
+        print >>outfile, "CASE requires a CONST <ident> or a <number> followed by :"
     exit(0)
 
 def getch():
@@ -128,7 +136,7 @@ def getsym():
             if not ch.isdigit():
                 break
         if k>nmax:
-            error(30)
+            error(10)
         else:
             id = "".join(a)
     
@@ -284,7 +292,6 @@ def statement(tx):
             error(16)
         getsym()
         statement(tx)
-        #getsym()            #enabling this will perform else, but break everything else...
         if sym == "ELSE":   #probably need to add error code as well
             getsym()
             statement(tx)
@@ -368,6 +375,34 @@ def statement(tx):
         getsym()
         condition(tx)
 
+    elif sym == "CASE":
+        getsym()
+        expression(tx)
+        if sym != "OF":
+            error(31)           #throw error for expected OF
+        getsym()
+        while True:
+            if sym != "number" and sym != "ident":
+                break
+            if sym == "ident":      #ident must be constant
+                i = position(tx, id)
+                if i==0:
+                    error(11)
+                elif table[i].kind != "const":
+                    error(33)           #throw error for expected CONST ident
+            getsym()
+            if sym != "colon":
+                error(34)               #throw error for expected colon
+            getsym()
+            statement(tx)
+            if sym != "semicolon":
+                error(35)               #throw error for expected semi colon
+            getsym()
+
+        if sym != "CEND":
+            error(32)
+        
+        getsym()
 #--------------EXPRESSION--------------------------------------
 def expression(tx):
     global sym;
@@ -449,6 +484,10 @@ rword.append('WRITE')
 rword.append('WRITELN')
 rword.append('REPEAT')
 rword.append('UNTIL')
+rword.append('CASE')
+rword.append('OF')
+rword.append('CEND')
+
 
 ssym = {'+' : "plus",
              '-' : "minus",
