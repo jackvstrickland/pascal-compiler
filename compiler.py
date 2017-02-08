@@ -90,6 +90,8 @@ def error(num):
         print >>outfile, "Expected ident to be a CONST."
     elif num == 34:
         print >>outfile, "CASE requires a CONST <ident> or a <number> followed by :"
+    elif num == 35: 
+        print >>outfile, "CASE expects a semi-colon after <statement>."
     exit(0)
 
 def getch():
@@ -398,11 +400,10 @@ def statement(tx):
             if sym != "semicolon":
                 error(35)               #throw error for expected semi colon
             getsym()
-
         if sym != "CEND":
             error(32)
-        
         getsym()
+
 #--------------EXPRESSION--------------------------------------
 def expression(tx):
     global sym;
