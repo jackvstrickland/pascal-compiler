@@ -336,25 +336,27 @@ def statement(tx):
         getsym()                #have to check for lparen and then 1 or more exp. followed by rparen
         if sym != "lparen":
             error(29)
-        getsym()
-        expression(tx)
-        while sym == "comma":   #if there is more than one expression
+        while True:             #always one expression, but may be more than one
             getsym()
             expression(tx)
+            if sym == "comma":
+                break   
         if sym != "rparen":
             error(22)
-        
+
     elif sym == "WRITELN":
         getsym()                #have to check for lparen and then 1 or more exp. followed by rparen
         if sym != "lparen":
             error(29)
-        getsym()
-        expression(tx)
-        while sym == "comma":   #if there is more than one expression
+        while True:             #always one expression, but may be more than one
             getsym()
             expression(tx)
+            if sym == "comma":
+                break   
         if sym != "rparen":
-            error(22)       
+            error(22)     
+
+    
 
 #--------------EXPRESSION--------------------------------------
 def expression(tx):
