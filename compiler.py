@@ -1,6 +1,6 @@
 import sys
 
-norw = 15      #number of reserved words
+norw = 17      #number of reserved words
 txmax = 100   #length of identifier table
 nmax = 14      #max number of digits in number
 al = 10          #length of identifiers
@@ -78,6 +78,8 @@ def error(num):
         print >>outfile, "FOR should be followed by identifier."
     elif num == 28:
         print >>outfile, "FOR EXPRESSION must be followed by TO or DOWNTO."
+    elif num == 29:
+        print >>outfile, "WRITE/WRITELN must be followed 1 or more expressions inside parantheses."
     exit(0)
 
 def getch():
@@ -280,6 +282,7 @@ def statement(tx):
             error(16)
         getsym()
         statement(tx)
+        #getsym()            #enabling this will perform else, but break everything else...
         if sym == "ELSE":   #probably need to add error code as well
             getsym()
             statement(tx)
@@ -301,12 +304,11 @@ def statement(tx):
             error(18)
         getsym()
         statement(tx)
-    
-    # adding more to statement()
+
+    # adding more "production" rules to statement
     elif sym == "FOR":
         getsym()
-        # need to check if VAR and ident
-        if sym != "ident":
+        if sym != "ident":          # need to check if VAR and ident
             error(27)  
         i = position(tx, id)
         if i == 0:
@@ -318,14 +320,40 @@ def statement(tx):
             error(13)
         getsym()
         expression(tx)
-        if sym != "TO" or sym != "DOWNTO":
-            error(28) #throw error, expected to or downto
+        if sym != "TO" and sym != "DOWNTO":     #throw error, expected to or downto
+            error(28)
         getsym()
         expression(tx)
         if sym != "DO":
             error(18)
         getsym()
         statement(tx)
+
+    elif sym == "WRITE":
+        getsym()                #have to check for lparen and then 1 or more exp. followed by rparen
+        if sym != "lparen":
+            error(29)
+        while True:             #always one expression, but may be more than one
+            getsym()
+            expression(tx)
+            if sym != "comma":
+                break   
+        if sym != "rparen":
+            error(22)
+        getsym()
+
+    elif sym == "WRITELN":
+        getsym()            #have to check for lparen,then 1 or more exp.,followed by rparen
+        if sym != "lparen":
+            error(29)
+        while True:         #always one expression, but may be more than one
+            getsym()
+            expression(tx)
+            if sym != "comma":
+                break   
+        if sym != "rparen":
+            error(22)
+        getsym()
 
 #--------------EXPRESSION--------------------------------------
 def expression(tx):
@@ -368,7 +396,7 @@ def factor(tx):
         getsym()
     
     else:
-        #print "sym here is: ", sym
+        print "sym here is: ", sym
         error(24)
 
 #-----------CONDITION-------------------------------------------------
@@ -404,6 +432,8 @@ rword.append('ELSE')
 rword.append('FOR')
 rword.append('TO')
 rword.append('DOWNTO')
+rword.append('WRITE')
+rword.append('WRITELN')
 
 ssym = {'+' : "plus",
              '-' : "minus",
