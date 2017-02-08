@@ -80,6 +80,8 @@ def error(num):
         print >>outfile, "FOR EXPRESSION must be followed by TO or DOWNTO."
     elif num == 29:
         print >>outfile, "WRITE/WRITELN must be followed 1 or more expressions inside parantheses."
+    elif num == 30:
+        print >>outfile, "expected UNTIL after statements following REPEAT."
     exit(0)
 
 def getch():
@@ -354,6 +356,17 @@ def statement(tx):
         if sym != "rparen":
             error(22)
         getsym()
+
+    elif sym == "REPEAT":
+        while True:
+            getsym()
+            statement(tx)
+            if sym != "semicolon":
+                break
+        if sym != "UNTIL":      #throw error for expected UNTIL after statements in REPEAT
+            error(30)
+        getsym()
+        condition(tx)
 
 #--------------EXPRESSION--------------------------------------
 def expression(tx):
