@@ -1,6 +1,6 @@
 import sys
 
-norw = 17      #number of reserved words
+norw = 19      #number of reserved words
 txmax = 100   #length of identifier table
 nmax = 14      #max number of digits in number
 al = 10          #length of identifiers
@@ -80,6 +80,8 @@ def error(num):
         print >>outfile, "FOR EXPRESSION must be followed by TO or DOWNTO."
     elif num == 29:
         print >>outfile, "WRITE/WRITELN must be followed 1 or more expressions inside parantheses."
+    elif num == 30:
+        print >>outfile, "expected UNTIL after statements following REPEAT."
     exit(0)
 
 def getch():
@@ -355,6 +357,17 @@ def statement(tx):
             error(22)
         getsym()
 
+    elif sym == "REPEAT":
+        while True:
+            getsym()
+            statement(tx)
+            if sym != "semicolon":
+                break
+        if sym != "UNTIL":      #throw error for expected UNTIL after statements in REPEAT
+            error(30)
+        getsym()
+        condition(tx)
+
 #--------------EXPRESSION--------------------------------------
 def expression(tx):
     global sym;
@@ -434,6 +447,8 @@ rword.append('TO')
 rword.append('DOWNTO')
 rword.append('WRITE')
 rword.append('WRITELN')
+rword.append('REPEAT')
+rword.append('UNTIL')
 
 ssym = {'+' : "plus",
              '-' : "minus",
