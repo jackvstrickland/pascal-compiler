@@ -305,11 +305,10 @@ def statement(tx):
         getsym()
         statement(tx)
 
-    # adding more "production" rules to statement()
+    # adding more "production" rules to statement
     elif sym == "FOR":
         getsym()
-        # need to check if VAR and ident
-        if sym != "ident":
+        if sym != "ident":          # need to check if VAR and ident
             error(27)  
         i = position(tx, id)
         if i == 0:
@@ -321,12 +320,10 @@ def statement(tx):
             error(13)
         getsym()
         expression(tx)
-        #getsym() #test
-        if sym != "TO" or sym != "DOWNTO":
-            error(28) #throw error, expected to or downto
+        if sym != "TO" and sym != "DOWNTO":     #throw error, expected to or downto
+            error(28)
         getsym()
         expression(tx)
-        #getsym() #test
         if sym != "DO":
             error(18)
         getsym()
@@ -354,9 +351,7 @@ def statement(tx):
             if sym == "comma":
                 break   
         if sym != "rparen":
-            error(22)     
-
-    
+            error(22)
 
 #--------------EXPRESSION--------------------------------------
 def expression(tx):
