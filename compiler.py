@@ -1,6 +1,6 @@
 import sys
 
-norw = 19      #number of reserved words
+norw = 22      #number of reserved words
 txmax = 100   #length of identifier table
 nmax = 14      #max number of digits in number
 al = 10          #length of identifiers
@@ -449,6 +449,10 @@ rword.append('WRITE')
 rword.append('WRITELN')
 rword.append('REPEAT')
 rword.append('UNTIL')
+rword.append('CASE')
+rword.append('OF')
+rword.append('CEND')
+
 
 ssym = {'+' : "plus",
              '-' : "minus",
